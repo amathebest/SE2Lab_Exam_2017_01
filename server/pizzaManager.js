@@ -3,25 +3,25 @@
 var menu = [
     {
 		ID: 1,
-		name: "Margherita", 
+		name: "Margherita",
 		price: 9.5,
 		ingriedentsList: ["pomodoro","mozzarella", "basilico", "olio"]
 	},
     {
 		ID: 2,
-		name: "Quattro Stagioni", 
+		name: "Quattro Stagioni",
 		price: 8,
 		ingriedentsList: ["pomodoro","mozzarella", "funghi","asparagi","carciofini", "prosciutto cotto", "olive nere", "uovo sodo" ]
 	},
 	{
 		ID: 3,
-		name: "Funghi", 
+		name: "Funghi",
 		price: 17.5,
 		ingriedentsList: ["pomodoro","mozzarella", "funghi champignon", "prezzemolo", "olio"]
 	},
     {
 		ID: 4,
-		name: "Boscaiola", 
+		name: "Boscaiola",
 		price: 19.5,
 		ingriedentsList: ["pomodoro","mozzarella", "funghi champignon", "salsiccia"]
 	}
@@ -57,10 +57,10 @@ var searchPizzaName = function searchPizzaName(name)
 			return menu[i];
 		}
     }
-    
+
     //if reach this point return null
     return null;
-    
+
 }
 
 /**
@@ -79,7 +79,7 @@ var getMenu = function getMenu(){
 var deletePizzaID = function deletePizzaID(ID)
 {
 	var position = null;
-	
+
     //search for the position
     for (i=0; i < menu.length; i++)
 	{
@@ -88,7 +88,7 @@ var deletePizzaID = function deletePizzaID(ID)
 					position = i;
                 }
         }
-	
+
     //if is not found return null
 	if (position == null)
     	return null;
@@ -106,7 +106,7 @@ var deletePizzaID = function deletePizzaID(ID)
 var deletePizzaName = function deletePizzaName(name)
 {
 	var position = null;
-	
+
     //search for the position
     for (i=0; i < menu.length; i++)
 	{
@@ -115,7 +115,7 @@ var deletePizzaName = function deletePizzaName(name)
 					position = i;
                 }
         }
-	
+
     //if is not found return null
 	if (position == null)
     	return null;
@@ -138,11 +138,37 @@ var insertPizza = function insertPizza(pizza)
 
 
 //INSERIRE CODICE QUI SOTTO
+/**
+ * @brief This function updates pizza's prices depending on some parameters
+ * @param price, increment, lower
+ * @return list of updated pizzas
+ */
+var updatePizzasByPrice = function updatePizzasByPrice(price, increment, lower) {
+    var myPrice = price;
+    var modified[];
+
+    if (lower) {    //porzione di codice in cui lower = TRUE
+        for (i = 0; i < menu.length; i++) {
+            if (menu[i].price < myPrice) {
+                menu[i].price = menu[i].price + increment;
+                modified.push(menu[i]);
+            }
+        }
+    } else {        //porzione di codice in cui lower = FALSE
+        for (j = 0; j < menu.length; j++) {
+            if (menu[i].price > myPrice) {
+                menu[i].price = menu[i].price + increment;
+                modified.push(menu[i]);
+            }
+        }
+    }
+    return modified;
+}
 
 //export functions
-exports.searchPizzaID = searchPizzaID; 
-exports.searchPizzaName = searchPizzaName; 
-exports.deletePizzaID = deletePizzaID; 
-exports.deletePizzaName = deletePizzaName; 
-exports.insertPizza = insertPizza; 
-exports.getMenu = getMenu; 
+exports.searchPizzaID = searchPizzaID;
+exports.searchPizzaName = searchPizzaName;
+exports.deletePizzaID = deletePizzaID;
+exports.deletePizzaName = deletePizzaName;
+exports.insertPizza = insertPizza;
+exports.getMenu = getMenu;

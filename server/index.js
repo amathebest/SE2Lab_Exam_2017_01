@@ -36,7 +36,7 @@ app.get('/', function(request, response) {
  * @brief returns the list of pizzas
  * @return a static page.
  */
-app.get('/showList', function(request, response) 
+app.get('/showList', function(request, response)
 {
 	var headers = {};
 	headers["Content-Type"] = "text/html";
@@ -48,7 +48,7 @@ app.get('/showList', function(request, response)
  * @brief search a pizza
  * @return search a pizza using two parameters, one of them optional
  */
-app.post('/searchPizza', function(request, response) 
+app.post('/searchPizza', function(request, response)
 {
 	var headers = {};
 	headers["Access-Control-Allow-Origin"] = "*";
@@ -59,7 +59,7 @@ app.post('/searchPizza', function(request, response)
 	headers["Content-Type"] = "application/json";
 
 	var pizzaID;
-	
+
 	//check body and parameters
 	if ( typeof request.body !== 'undefined' && request.body)
 	{
@@ -67,15 +67,15 @@ app.post('/searchPizza', function(request, response)
             {
 			 pizzaID = request.body.ID;
             }
-		else 
+		else
 			pizzaID = "not defined";
-	
+
 	}
 	else
 	{
 		pizzaID = "body undefined";
 	}
-    
+
     if (pizzaID!="not defined" && pizzaID!="body undefined")
 	{
 		//aceptable input
@@ -94,12 +94,12 @@ app.post('/searchPizza', function(request, response)
 		}
 
 	}
-    else    
+    else
 	{
 		//unaceptable input
 		response.writeHead(406, headers);
 		response.end(JSON.stringify("1"));
-	}   
+	}
 
 });
 
@@ -107,7 +107,7 @@ app.post('/searchPizza', function(request, response)
  * @brief delete a pizza
  * @return delete a pizza identified by its ID or name
  */
-app.post('/deletePizza', function(request, response) 
+app.post('/deletePizza', function(request, response)
 {
 	var headers = {};
 	headers["Access-Control-Allow-Origin"] = "*";
@@ -119,7 +119,7 @@ app.post('/deletePizza', function(request, response)
 
 	var pizzaID;
 	var pizzaName;
-	
+
 	//check body and parameters
 	if ( typeof request.body !== 'undefined' && request.body)
 	{
@@ -127,25 +127,25 @@ app.post('/deletePizza', function(request, response)
             {
 			 pizzaID = request.body.ID;
             }
-		else 
+		else
 			pizzaID = "not defined";
-		
+
 		if ( typeof request.body.name !== 'undefined' && request.body.name)
             {
 			 pizzaName = request.body.name;
             }
-		else 
+		else
 			pizzaName = "not defined";
-	
+
 	}
 	else
 	{
 		pizzaID = "body undefined";
 		pizzaName = "body undefined";
 	}
-    
+
 	var pizza;
-	
+
     if (pizzaID!="not defined" && pizzaID!="body undefined")
 	{
 		//aceptable input
@@ -164,7 +164,7 @@ app.post('/deletePizza', function(request, response)
 
 	}
 	else if (pizzaName!="not defined" && pizzaName!="body undefined")
-	{	
+	{
 		//aceptable input
 		//delete a pizza using ID
 		pizza = pizzaManager.deletePizzaName(pizzaName);
@@ -179,12 +179,12 @@ app.post('/deletePizza', function(request, response)
 			response.end(JSON.stringify());
 		}
 	}
-    else    
+    else
 		{
         	//unaceptable input
         	response.writeHead(406, headers);
 			response.end(JSON.stringify("1"));
-		}   
+		}
 
 });
 
@@ -192,8 +192,8 @@ app.post('/deletePizza', function(request, response)
  * @brief add a pizza
  * @return the pizza added to the list of pizzas
  */
-app.post('/addPizza', function(request, response) 
-{	
+app.post('/addPizza', function(request, response)
+{
 	var headers = {};
 	headers["Access-Control-Allow-Origin"] = "*";
 	headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
@@ -206,7 +206,7 @@ app.post('/addPizza', function(request, response)
 	var pizzaName;
 	var pizzaPrice;
 	var pizzaIngridients;
-    
+
 	//check body and parameters
 	if ( typeof request.body !== 'undefined' && request.body)
 	{
@@ -221,14 +221,14 @@ app.post('/addPizza', function(request, response)
 			 pizzaPrice = parseFloat(request.body.price);
 			 pizzaIngridients = request.body.ingridients;
             }
-		else 
+		else
 			pizzaID = "not defined";
 	}
 	else
 	{
 		pizzaID = "body undefined";
 	}
-    
+
     if (pizzaID!="not defined" && pizzaID!="body undefined")
 	{
 		//aceptable input
@@ -239,7 +239,7 @@ app.post('/addPizza', function(request, response)
 			price: pizzaPrice,
 			ingriedentsList: pizzaIngridients
 		}
-		
+
 		//if insertion works correctly
 		if (pizzaManager.insertPizza(pizza))
 		{
@@ -253,16 +253,61 @@ app.post('/addPizza', function(request, response)
 		}
 
 	}
-    else    
+    else
 	{
 		//unaceptable input
 		response.writeHead(406, headers);
 		response.end(JSON.stringify("1"));
-	}   
+	}
 
 });
 
 //INSERIRE CODICE QUI SOTTO
+
+app.post('/updatePizzasByPrice', function(request, response) {
+	var headers = {};
+	headers["Access-Control-Allow-Origin"] = "*";
+	headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
+	headers["Access-Control-Allow-Credentials"] = false;
+	headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+	headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
+	headers["Content-Type"] = "application/json";
+
+	var pizzaID;
+	var pizzaName;
+	var pizzaPrice;
+
+	//check body and parameters
+	if ( typeof request.body !== 'undefined' && request.body) {
+		if ( typeof request.body.ID !== 'undefined' && request.body.ID &&
+			 typeof request.body.name !== 'undefined' && request.body.name &&
+			 typeof request.body.price !== 'undefined' && request.body.price && ) {
+			 	pizzaID = request.body.ID;
+			 	pizzaName = request.body.name;
+			 	pizzaPrice = parseFloat(request.body.price);
+            } else {
+				pizzaID = "not defined";
+			} else {
+				pizzaID = "body undefined";
+			}
+
+	var updatedPizzas[] = pizzaManager.updatePizzasByPrice();
+
+	if (pizzaID!="not defined" && pizzaID!="body undefined") {
+		//if insertion works correctly
+		if (updatedPizzas.length !== 0) {
+			response.writeHead(200, headers);
+			response.end(JSON.stringify(updatedPizzas);
+		} else {
+			response.writeHead(400, headers);
+			response.end(JSON.stringify());
+		}
+	} else {
+		//unaceptable input
+		response.writeHead(406, headers);
+		response.end(JSON.stringify("1"));
+	}
+});
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
