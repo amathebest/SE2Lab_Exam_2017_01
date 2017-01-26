@@ -265,6 +265,7 @@ app.post('/addPizza', function(request, response)
 //INSERIRE CODICE QUI SOTTO
 
 app.post('/updatePizzasByPrice', function(request, response) {
+
 	var headers = {};
 	headers["Access-Control-Allow-Origin"] = "*";
 	headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
@@ -274,39 +275,43 @@ app.post('/updatePizzasByPrice', function(request, response) {
 	headers["Content-Type"] = "application/json";
 
 	var pizzaID;
-	var pizzaName;
 	var pizzaPrice;
+	var pizzaIncrement;
+	var pizzaLower;
 
 	//check body and parameters
-	if ( typeof request.body !== 'undefined' && request.body) {
-		if ( typeof request.body.ID !== 'undefined' && request.body.ID &&
-			 typeof request.body.name !== 'undefined' && request.body.name &&
-			 typeof request.body.price !== 'undefined' && request.body.price && ) {
-			 	pizzaID = request.body.ID;
-			 	pizzaName = request.body.name;
-			 	pizzaPrice = parseFloat(request.body.price);
-            } else {
-				pizzaID = "not defined";
-			} else {
-				pizzaID = "body undefined";
-			}
-
-	var updatedPizzas[] = pizzaManager.updatePizzasByPrice();
-
-	if (pizzaID!="not defined" && pizzaID!="body undefined") {
-		//if insertion works correctly
-		if (updatedPizzas.length !== 0) {
-			response.writeHead(200, headers);
-			response.end(JSON.stringify(updatedPizzas);
-		} else {
-			response.writeHead(400, headers);
-			response.end(JSON.stringify());
-		}
-	} else {
-		//unaceptable input
-		response.writeHead(406, headers);
-		response.end(JSON.stringify("1"));
+	if ( typeof request.body !== 'undefined' && request.body)
+	{
+		if ( typeof request.body.price !== 'undefined' && request.body.price &&
+			 typeof request.body.increment !== 'undefined' && request.body.increment &&
+			 typeof request.body.lower !== 'undefined' && request.body.lower
+		   )
+            {
+			 pizzaPrice = parseInt(request.body.price);
+			 pizzaIncrement = parseInt(request.body.increment);
+			 pizzaLower = request.body.lower;
+            }
+		else
+			pizzaID = "not defined";
 	}
+	else
+	{
+		pizzaID = "body undefined";
+	}
+
+
+		//create the pizza object
+		var pizza = {
+			price: pizzaPrice,
+			increment: pizzaIncrement,
+			lower: pizzaLower
+		}
+
+
+			response.writeHead(200, headers);
+			response.end(JSON.stringify(pizza));
+
+
 });
 
 app.listen(app.get('port'), function() {
